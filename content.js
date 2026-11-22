@@ -7,7 +7,9 @@ image.style.cssText = "position: fixed; width: 64px; height: 64px; left: 0; top:
 const cornerImage = document.createElement("img");
 cornerImage.src = chrome.runtime.getURL("logo.png");
 cornerImage.alt = "";
+cornerImage.draggable = false;
 cornerImage.style.cssText = "position: fixed; width: 64px; height: 64px; right: 16px; bottom: 16px; pointer-events: none; display: none; z-index: 2147483647;";
+cornerImage.addEventListener("click", (event) => event.stopPropagation());
 host.style.cssText = "position: fixed; inset: 0; pointer-events: none; z-index: 2147483647;";
 shadow.append(image, cornerImage);
 
@@ -53,6 +55,11 @@ function setCornerEnabled(value) {
   updateHost();
 }
 
+function setCornerClickable(value) {
+  cornerImage.style.pointerEvents = value ? "auto" : "none";
+  cornerImage.style.cursor = value ? "pointer" : "";
+}
+
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local") return;
   if (changes.enabled) {
@@ -63,14 +70,21 @@ chrome.storage.onChanged.addListener((changes, area) => {
     changedSettings.add("cornerEnabled");
     setCornerEnabled(changes.cornerEnabled.newValue === true);
   }
+  if (changes.cornerClickable) {
+    changedSettings.add("cornerClickable");
+    setCornerClickable(changes.cornerClickable.newValue === true);
+  }
 });
 
-chrome.storage.local.get(["enabled", "cornerEnabled"]).then((settings) => {
+chrome.storage.local.get(["enabled", "cornerEnabled", "cornerClickable"]).then((settings) => {
   if (!changedSettings.has("enabled")) {
     setEnabled(settings.enabled === true);
   }
   if (!changedSettings.has("cornerEnabled")) {
     setCornerEnabled(settings.cornerEnabled === true);
+  }
+  if (!changedSettings.has("cornerClickable")) {
+    setCornerClickable(settings.cornerClickable === true);
   }
 }).catch((reason) => {
   console.error("Could not load companion setting:", reason);
