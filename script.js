@@ -1,7 +1,8 @@
 const toggles = {
   enabled: document.getElementById("enabled"),
   cornerEnabled: document.getElementById("cornerEnabled"),
-  cornerClickable: document.getElementById("cornerClickable")
+  cornerClickable: document.getElementById("cornerClickable"),
+  chatEnabled: document.getElementById("chatEnabled")
 };
 const error = document.getElementById("error");
 const changedSettings = new Set();
