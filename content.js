@@ -9,13 +9,38 @@ cornerImage.src = chrome.runtime.getURL("logo.png");
 cornerImage.alt = "";
 cornerImage.draggable = false;
 cornerImage.style.cssText = "position: fixed; width: 64px; height: 64px; right: 16px; bottom: 16px; pointer-events: none; display: none; z-index: 2147483647;";
-cornerImage.addEventListener("click", (event) => event.stopPropagation());
+const quoteElement = document.createElement("div");
+quoteElement.setAttribute("role", "status");
+quoteElement.style.cssText = "position: fixed; right: 16px; bottom: 88px; max-width: min(320px, calc(100vw - 32px)); max-height: 40vh; overflow-y: auto; box-sizing: border-box; padding: 12px; border-radius: 8px; background: white; color: #17213a; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25); font: 14px/1.4 Arial, sans-serif; overflow-wrap: anywhere; pointer-events: auto; display: none;";
 host.style.cssText = "position: fixed; inset: 0; pointer-events: none; z-index: 2147483647;";
-shadow.append(image, cornerImage);
+shadow.append(image, cornerImage, quoteElement);
 
 let enabled = false;
 let cornerEnabled = false;
+let quoteRequest = 0;
 const changedSettings = new Set();
+
+cornerImage.addEventListener("click", async (event) => {
+  event.stopPropagation();
+  const request = ++quoteRequest;
+  quoteElement.textContent = "Loading quote...";
+  quoteElement.style.display = "block";
+  try {
+    const response = await chrome.runtime.sendMessage({ type: "getQuote" });
+    if (!response || typeof response.content !== "string") {
+      throw new Error(response?.error || "Invalid quote response");
+    }
+    console.log(response.content);
+    if (request === quoteRequest && cornerEnabled) {
+      quoteElement.textContent = response.content;
+    }
+  } catch (error) {
+    console.error("Could not load quote:", error);
+    if (request === quoteRequest && cornerEnabled) {
+      quoteElement.textContent = "Could not load a quote. Please try again.";
+    }
+  }
+});
 
 function updateHost() {
   if (enabled || cornerEnabled) {
@@ -52,6 +77,11 @@ function setEnabled(value) {
 function setCornerEnabled(value) {
   cornerEnabled = value;
   cornerImage.style.display = value ? "block" : "none";
+  if (!value) {
+    quoteRequest++;
+    quoteElement.style.display = "none";
+    quoteElement.textContent = "";
+  }
   updateHost();
 }
 
