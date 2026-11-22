@@ -14,7 +14,7 @@ function createCornerCompanion(image, quoteElement, chat) {
     quoteElement.textContent = "Loading quote...";
     quoteElement.hidden = false;
     try {
-      const response = await chrome.runtime.sendMessage({ type: "getQuote" });
+      const response = await browser.runtime.sendMessage({ type: "getQuote" });
       if (!response || typeof response.content !== "string") {
         throw new Error(response?.error || "Invalid quote response");
       }

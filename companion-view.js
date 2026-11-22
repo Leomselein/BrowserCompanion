@@ -3,20 +3,20 @@ function createCompanionView() {
   const shadow = host.attachShadow({ mode: "closed" });
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = chrome.runtime.getURL("companion.css");
+  stylesheet.href = browser.runtime.getURL("companion.css");
   stylesheet.addEventListener("error", () => {
     console.error("Could not load companion styles.");
   });
 
   const image = document.createElement("img");
   image.className = "cursor-companion";
-  image.src = chrome.runtime.getURL("logo.png");
+  image.src = browser.runtime.getURL("logo.png");
   image.alt = "";
   image.hidden = true;
 
   const cornerImage = document.createElement("img");
   cornerImage.className = "corner-companion";
-  cornerImage.src = chrome.runtime.getURL("logo.png");
+  cornerImage.src = browser.runtime.getURL("logo.png");
   cornerImage.alt = "";
   cornerImage.draggable = false;
   cornerImage.hidden = true;
@@ -40,5 +40,13 @@ function createCompanionView() {
   chatContainer.append(chatMessages, chatInput);
   shadow.append(stylesheet, image, cornerImage, quoteElement, chatContainer);
 
-  return { host, image, cornerImage, quoteElement, chatContainer, chatMessages, chatInput };
+  return {
+    host,
+    image,
+    cornerImage,
+    quoteElement,
+    chatContainer,
+    chatMessages,
+    chatInput,
+  };
 }

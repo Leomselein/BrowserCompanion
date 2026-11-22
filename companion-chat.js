@@ -10,7 +10,13 @@ function createCompanionChat(container, messages, input) {
   }
 
   input.addEventListener("keydown", async (event) => {
-    if (event.key !== "Enter" || event.isComposing || !input.value.trim() || input.disabled) return;
+    if (
+      event.key !== "Enter" ||
+      event.isComposing ||
+      !input.value.trim() ||
+      input.disabled
+    )
+      return;
     event.preventDefault();
     const userMessage = input.value;
     input.value = "";
@@ -18,12 +24,15 @@ function createCompanionChat(container, messages, input) {
     const request = ++requestId;
     appendMessage("You: " + userMessage, "chat-message");
     try {
-      const response = await chrome.runtime.sendMessage({ type: "getQuote" });
+      const response = await browser.runtime.sendMessage({ type: "getQuote" });
       if (!response || typeof response.content !== "string") {
         throw new Error(response?.error || "Invalid response");
       }
       if (request === requestId) {
-        appendMessage("Companion: " + response.content, "chat-message companion");
+        appendMessage(
+          "Companion: " + response.content,
+          "chat-message companion",
+        );
         console.log(response.content);
       }
     } catch (error) {
