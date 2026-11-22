@@ -8,6 +8,20 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <div>app works</div>
+    <main>
+      <div class="heading">
+        <img src="logo.png" alt="" width="44" height="44" />
+        <div>
+          <h1>Browser Companion</h1>
+          <p>Let your companion follow your cursor.</p>
+        </div>
+      </div>
+      <label class="setting">
+        <span>Enable companion</span>
+        <input id="enabled" type="checkbox" role="switch" disabled />
+      </label>
+      <p class="note">Not available on Chrome pages or the Chrome Web Store.</p>
+      <p id="error" class="error" role="alert" hidden></p>
+    </main>
   </body>
 </html>

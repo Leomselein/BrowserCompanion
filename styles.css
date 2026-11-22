@@ -1,0 +1,85 @@
+body {
+  width: 290px;
+  margin: 0;
+  color: #17213a;
+  font: 14px/1.4 Arial, sans-serif;
+}
+
+main {
+  padding: 18px;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.heading p,
+.note {
+  margin: 4px 0 0;
+  color: #5d6576;
+  font-size: 12px;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.setting input {
+  appearance: none;
+  width: 42px;
+  height: 24px;
+  margin: 0;
+  border: 0;
+  border-radius: 12px;
+  background: #aab1bf;
+  cursor: pointer;
+}
+
+.setting input::before {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 3px;
+  border-radius: 50%;
+  background: white;
+  content: "";
+  transition: transform 0.15s;
+}
+
+.setting input:checked {
+  background: #1747ff;
+}
+
+.setting input:checked::before {
+  transform: translateX(18px);
+}
+
+.setting input:focus-visible {
+  outline: 2px solid #17213a;
+  outline-offset: 3px;
+}
+
+.setting input:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.note {
+  margin-top: 16px;
+}
+
+.error {
+  margin: 10px 0 0;
+  color: #b42318;
+}
