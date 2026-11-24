@@ -24,7 +24,7 @@ function createCompanionChat(container, messages, input) {
     const request = ++requestId;
     appendMessage("You: " + userMessage, "chat-message");
     try {
-      const response = await browser.runtime.sendMessage({ type: "getQuote" });
+      const response = await chrome.runtime.sendMessage({ type: "getQuote" });
       if (!response || typeof response.content !== "string") {
         throw new Error(response?.error || "Invalid response");
       }

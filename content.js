@@ -38,7 +38,7 @@ const settingHandlers = {
   chatEnabled: corner.setChatEnabled,
 };
 
-browser.storage.onChanged.addListener((changes, area) => {
+chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local") return;
   for (const [key, handler] of Object.entries(settingHandlers)) {
     if (changes[key]) {
@@ -48,7 +48,7 @@ browser.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-browser.storage.local
+chrome.storage.local
   .get(Object.keys(settingHandlers))
   .then((settings) => {
     for (const [key, handler] of Object.entries(settingHandlers)) {

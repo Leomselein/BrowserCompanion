@@ -7,7 +7,7 @@ const toggles = {
 const error = document.getElementById("error");
 const changedSettings = new Set();
 
-browser.storage.onChanged.addListener((changes, area) => {
+chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local") return;
   for (const [key, toggle] of Object.entries(toggles)) {
     if (changes[key]) {
@@ -17,7 +17,7 @@ browser.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-browser.storage.local
+chrome.storage.local
   .get(Object.keys(toggles))
   .then((settings) => {
     for (const [key, toggle] of Object.entries(toggles)) {
@@ -39,7 +39,7 @@ for (const [key, toggle] of Object.entries(toggles)) {
     toggle.disabled = true;
     error.hidden = true;
     try {
-      await browser.storage.local.set({ [key]: toggle.checked });
+      await chrome.storage.local.set({ [key]: toggle.checked });
     } catch (reason) {
       console.error("Could not save companion setting:", reason);
       toggle.checked = !toggle.checked;

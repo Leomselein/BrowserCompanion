@@ -3,20 +3,20 @@ function createCompanionView() {
   const shadow = host.attachShadow({ mode: "closed" });
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = browser.runtime.getURL("companion.css");
+  stylesheet.href = chrome.runtime.getURL("companion.css");
   stylesheet.addEventListener("error", () => {
     console.error("Could not load companion styles.");
   });
 
   const image = document.createElement("img");
   image.className = "cursor-companion";
-  image.src = browser.runtime.getURL("logo.png");
+  image.src = chrome.runtime.getURL("logo.png");
   image.alt = "";
   image.hidden = true;
 
   const cornerImage = document.createElement("img");
   cornerImage.className = "corner-companion";
-  cornerImage.src = browser.runtime.getURL("logo.png");
+  cornerImage.src = chrome.runtime.getURL("logo.png");
   cornerImage.alt = "";
   cornerImage.draggable = false;
   cornerImage.hidden = true;

@@ -1,4 +1,4 @@
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "getQuote") return;
 
   fetch("https://dummyjson.com/quotes/random", { credentials: "omit" })
