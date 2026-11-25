@@ -46,5 +46,3 @@ Look for `Workshop:` comments in the prepared functions. Keep the existing initi
 After installing or reloading the extension, reload any already-open pages. Chrome does not allow extensions to run on its internal pages or the Chrome Web Store. To use it on local files, enable **Allow access to file URLs** in the extension's details.
 
 The page companion's elements are created in `companion-view.js` and styled by `companion.css`. Behavior is split between `cursor-companion.js`, `corner-companion.js`, and `companion-chat.js`; `content.js` connects them to saved settings. The popup uses `index.html`, `styles.css`, and `script.js`.
-
-Run the starter checks with `node --test extension.test.js`.
