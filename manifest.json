@@ -15,7 +15,13 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["companion-view.js", "cursor-companion.js", "companion-chat.js", "corner-companion.js", "content.js"]
+      "js": [
+        "companion-view.js",
+        "cursor-companion.js",
+        "companion-chat.js",
+        "corner-companion.js",
+        "content.js"
+      ]
     }
   ],
   "web_accessible_resources": [
