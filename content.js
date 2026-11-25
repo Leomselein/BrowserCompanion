@@ -11,33 +11,50 @@ const cursor = createCursorCompanion(image);
 const chat = createCompanionChat(chatContainer, chatMessages, chatInput);
 const corner = createCornerCompanion(cornerImage, quoteElement, chat);
 
-cursor.setEnabled(false);
-corner.setClickable(false);
-corner.setChatEnabled(false);
+let enabled = false;
+let cornerEnabled = false;
+const changedSettings = new Set();
 
-let settingChanged = false;
-
-function setCornerEnabled(value) {
-  corner.setEnabled(value);
-  if (value) {
+function updateHost() {
+  if (enabled || cornerEnabled) {
     if (!host.isConnected) document.documentElement.append(host);
   } else {
     host.remove();
   }
 }
 
+const settingHandlers = {
+  enabled(value) {
+    enabled = value;
+    cursor.setEnabled(value);
+    updateHost();
+  },
+  cornerEnabled(value) {
+    cornerEnabled = value;
+    corner.setEnabled(value);
+    updateHost();
+  },
+  cornerClickable: corner.setClickable,
+  chatEnabled: corner.setChatEnabled,
+};
+
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.cornerEnabled) {
-    settingChanged = true;
-    setCornerEnabled(changes.cornerEnabled.newValue !== false);
+  if (area !== "local") return;
+  for (const [key, handler] of Object.entries(settingHandlers)) {
+    if (changes[key]) {
+      changedSettings.add(key);
+      handler(changes[key].newValue === true);
+    }
   }
 });
 
 chrome.storage.local
-  .get({ cornerEnabled: true })
+  .get(Object.keys(settingHandlers))
   .then((settings) => {
-    if (!settingChanged) {
-      setCornerEnabled(settings.cornerEnabled === true);
+    for (const [key, handler] of Object.entries(settingHandlers)) {
+      if (!changedSettings.has(key)) {
+        handler(settings[key] === true);
+      }
     }
   })
   .catch((reason) => {

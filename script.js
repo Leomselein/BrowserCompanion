@@ -1,5 +1,8 @@
 const toggles = {
+  enabled: document.getElementById("enabled"),
   cornerEnabled: document.getElementById("cornerEnabled"),
+  cornerClickable: document.getElementById("cornerClickable"),
+  chatEnabled: document.getElementById("chatEnabled"),
 };
 const error = document.getElementById("error");
 const changedSettings = new Set();
@@ -9,13 +12,13 @@ chrome.storage.onChanged.addListener((changes, area) => {
   for (const [key, toggle] of Object.entries(toggles)) {
     if (changes[key]) {
       changedSettings.add(key);
-      toggle.checked = changes[key].newValue !== false;
+      toggle.checked = changes[key].newValue === true;
     }
   }
 });
 
 chrome.storage.local
-  .get({ cornerEnabled: true })
+  .get(Object.keys(toggles))
   .then((settings) => {
     for (const [key, toggle] of Object.entries(toggles)) {
       if (!changedSettings.has(key)) {
